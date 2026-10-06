@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c12nrkjt8ylh8"]
+
+[ext_resource type="Texture2D" uid="uid://c0b3q4db0uf8y" path="res://Assets/Blue.png" id="1_u8k5t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dn4j3"]
+size = Vector2(36, 182)
+
+[node name="Player2" type="Area2D" unique_id=2089851526]
+
+[node name="Runderer" type="Sprite2D" parent="." unique_id=1179119304]
+scale = Vector2(0.54411757, 1)
+texture = ExtResource("1_u8k5t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1229050479]
+shape = SubResource("RectangleShape2D_dn4j3")
+debug_color = Color(0.75461215, 0.34285828, 0.7690636, 0.41960785)
