@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cl8dswxeygses"]
+
+[ext_resource type="Script" uid="uid://cq3ttcbtbv2sk" path="res://Scripts/Pong/Pong.cs" id="1_o8plw"]
+[ext_resource type="PackedScene" uid="uid://dvowx1o6tbauo" path="res://Scenes/Pong/Player1.tscn" id="2_cghwj"]
+[ext_resource type="PackedScene" uid="uid://c12nrkjt8ylh8" path="res://Scenes/Pong/Player2.tscn" id="3_5ig22"]
+[ext_resource type="PackedScene" uid="uid://bkgsgplmdrdk4" path="res://Scenes/Pong/Ball.tscn" id="4_tbcxd"]
+[ext_resource type="Texture2D" uid="uid://djein6d6ddcpv" path="res://Assets/Pong/Background.png" id="5_sfkpr"]
+
+[node name="Pong" type="Node2D" unique_id=1958644901 node_paths=PackedStringArray("score", "gameTimer")]
+script = ExtResource("1_o8plw")
+scenePlayer1 = ExtResource("2_cghwj")
+scenePlayer2 = ExtResource("3_5ig22")
+sceneBall = ExtResource("4_tbcxd")
+score = NodePath("Label")
+gameTimer = NodePath("Timer")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=775728682]
+modulate = Color(0.89739984, 0.8973998, 0.8973997, 1)
+position = Vector2(575.00006, 337.00003)
+scale = Vector2(0.93146855, 0.9136646)
+texture = ExtResource("5_sfkpr")
+
+[node name="Label" type="Label" parent="." unique_id=740471140]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 517.0
+offset_top = 43.0
+offset_right = 669.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 48
+text = "SCORE"
+
+[node name="Timer" type="Timer" parent="." unique_id=750806454]
+wait_time = 5.0
+autostart = true
