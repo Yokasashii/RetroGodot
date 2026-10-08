@@ -65,7 +65,7 @@ public partial class Pong : Node2D
         player2.Position = new Vector2(screenSize.X - 50, screenSize.Y / 2);
         ball.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2);
         ball.Scale = new Vector2(rand.Randf() > 0.5 ? 1 : -1, rand.Randf() > 0.5 ? 1 : -1);
-        ballSpeed = 150;
+        ballSpeed = 200;
         score.Text = scorePlayer1 + " : " + scorePlayer2;
         gameTimer.Start(5);
         onGame = true;
@@ -88,6 +88,6 @@ public partial class Pong : Node2D
 
     void SpeedUpBall()
     {
-        if (onGame) ballSpeed *= 1.25f;
+        if (onGame) ballSpeed += 50;
     }
 }

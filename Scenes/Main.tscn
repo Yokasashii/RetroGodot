@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cwnbrqbmo842s" path="res://Scripts/Main.cs" id="1_r150o"]
 
-[node name="Main" type="Node2D" unique_id=1958644901 node_paths=PackedStringArray("pongButton")]
+[node name="Main" type="Node2D" unique_id=1958644901 node_paths=PackedStringArray("pongButton", "snakeButton")]
 script = ExtResource("1_r150o")
 pongButton = NodePath("ButtonPong")
+snakeButton = NodePath("ButtonSnake")
 
 [node name="ButtonPong" type="Button" parent="." unique_id=743330782]
 offset_left = 257.0
@@ -13,4 +14,13 @@ offset_right = 312.0
 offset_bottom = 196.0
 scale = Vector2(1.7662746, 1.771797)
 text = "PONG
+"
+
+[node name="ButtonSnake" type="Button" parent="." unique_id=1912494505]
+offset_left = 695.0
+offset_top = 164.0
+offset_right = 755.0
+offset_bottom = 195.0
+scale = Vector2(1.7662746, 1.771797)
+text = "SNAKE
 "
