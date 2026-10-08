@@ -14,14 +14,16 @@ public partial class Snake : Node2D
     RandomNumberGenerator rand = new RandomNumberGenerator();
 
     int colomnMax, lineMax;
-    int headDirection;
+    int headRotation;
+    int bodyRotation;
+    int oldBodyRotation;
     int cell = 64;
-    bool onGame = false;
-    bool keyPressUp, keyPressDown, keyPressLeft, keyPressRight;
 
     Vector2 screenSize;
     Vector2 vectorDirection = Vector2.Up;
     Vector2 headPosition;
+    Vector2 bodyPosition;
+    Vector2 oldBodyPosition;
 
     public override void _Ready()
     {
@@ -45,44 +47,35 @@ public partial class Snake : Node2D
         for (int i = 0; i < 2; i++) AddChild(snake[i]);
 
         head.Position = new Vector2(lineMax / 2 * cell + 32, colomnMax / 2 * cell + 32);
-
+        head.AreaEntered += CollisionSnake;
         apple = (Area2D)sceneApple.Instantiate();
         apple.AreaEntered += EatApple;
         apple.Position = new Vector2(cell * rand.RandiRange(1, lineMax) + 32, cell * rand.RandiRange(1, colomnMax) + 32);
         AddChild(apple);
     }
 
-    void CheckInput()
-    {
-        keyPressUp = Input.IsKeyPressed(Key.Z);
-        keyPressDown = Input.IsKeyPressed(Key.S);
-        keyPressRight = Input.IsKeyPressed(Key.D);
-        keyPressLeft = Input.IsKeyPressed(Key.Q);
-    }
-
     void Direction()
-    {
-        CheckInput();
+    {;
 
-        if (keyPressUp && vectorDirection != Vector2.Down)
+        if (Input.IsKeyPressed(Key.Z) && vectorDirection != Vector2.Down)
         { 
             vectorDirection = Vector2.Up;
-            headDirection = 0;
+            headRotation = 0;
         }
-        if (keyPressDown && vectorDirection != Vector2.Up)
+        if (Input.IsKeyPressed(Key.S) && vectorDirection != Vector2.Up)
         {
             vectorDirection = Vector2.Down;
-            headDirection = 180;
+            headRotation = 180;
         }
-        if (keyPressLeft && vectorDirection != Vector2.Right)
+        if (Input.IsKeyPressed(Key.Q) && vectorDirection != Vector2.Right)
         {
             vectorDirection = Vector2.Left;
-            headDirection = -90;
+            headRotation = -90;
         }
-        if (keyPressRight && vectorDirection != Vector2.Left)
+        if (Input.IsKeyPressed(Key.D)&& vectorDirection != Vector2.Left)
         {
             vectorDirection = Vector2.Right;
-            headDirection = 90;
+            headRotation = 90;
         }
     }
 
@@ -96,25 +89,25 @@ public partial class Snake : Node2D
             && head.Position.Y >= 0)
         {
             head.Position += vectorDirection * cell;
-            head.RotationDegrees = headDirection;
+            head.RotationDegrees = headRotation;
         }
     }
 
     void BodyMove()
     {
-        for (int i = 0; i < snake.Count -1; i++)
+        bodyPosition = headPosition;
+        bodyRotation = headRotation;
+
+        for (int i = 1; i <= snake.Count - 1; i++)
         {
-            if (i == 0)
-            {
-                snake[i + 1].Position = headPosition;
-                snake[i + 1].RotationDegrees = headDirection;
-            }
-            
-            if (i > 0)
-            {
-                snake[i + 1].Position = snake[i].Position;
-                snake[i + 1].RotationDegrees = snake[i].RotationDegrees;
-            }
+            oldBodyPosition = snake[i].Position;
+            oldBodyRotation = (int)snake[i].RotationDegrees;
+
+            snake[i].Position = bodyPosition;
+            snake[i].RotationDegrees = bodyRotation;
+
+            bodyPosition = oldBodyPosition;
+            bodyRotation = oldBodyRotation;
         }
     }
 
@@ -123,7 +116,22 @@ public partial class Snake : Node2D
         apple.Position = new Vector2(cell * rand.RandiRange(1, lineMax - 1) + 32, cell * rand.RandiRange(1, colomnMax - 1) + 32);
 
         body = (Area2D)sceneBody.Instantiate();
+        body.Position = snake[snake.Count - 1].Position;
         snake.Add(body);
         AddChild(body);
+    }
+
+    void CollisionSnake(Area2D pArea)
+    {
+        if (pArea != apple)
+        {
+            for (int i = 0; i < snake.Count; ++i)
+            {
+                snake[i].QueueFree();
+            }
+            snake.Clear();
+            apple.QueueFree();
+            StartGame();
+        }
     }
 }

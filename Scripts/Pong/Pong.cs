@@ -17,7 +17,6 @@ public partial class Pong : Node2D
     Vector2 screenSize;
 
     bool onGame = false;
-    bool keyPressZ, keyPressS, keyPressUp, keyPressDown = false;
     float ballSpeed;
     int playerSpeed = 300;
     int scorePlayer1 = 0;
@@ -47,15 +46,14 @@ public partial class Pong : Node2D
         if (onGame)
         {
             CheckRound();
-            CheckInput();
 
             ball.Position += new Vector2(ball.Scale.X, ball.Scale.Y) * ballSpeed * lDelta;
             if (ball.Position.Y >= screenSize.Y || ball.Position.Y <= 0) ball.Scale *= new Vector2(1, -1);
 
-            if (keyPressZ && player1.Position.Y >= playerHeight / 2) player1.Position += Vector2.Up * playerSpeed * 2 * lDelta;
-            if (keyPressS && player1.Position.Y <= screenSize.Y - playerHeight / 2) player1.Position += Vector2.Down * playerSpeed * 2 * lDelta;
-            if (keyPressUp && player2.Position.Y >= playerHeight / 2) player2.Position += Vector2.Up * playerSpeed * 2 * lDelta;
-            if (keyPressDown && player2.Position.Y <= screenSize.Y - playerHeight / 2) player2.Position += Vector2.Down * playerSpeed * 2 * lDelta;
+            if (Input.IsKeyPressed(Key.Z) && player1.Position.Y >= playerHeight / 2) player1.Position += Vector2.Up * playerSpeed * 2 * lDelta;
+            if (Input.IsKeyPressed(Key.S) && player1.Position.Y <= screenSize.Y - playerHeight / 2) player1.Position += Vector2.Down * playerSpeed * 2 * lDelta;
+            if (Input.IsKeyPressed(Key.Up) && player2.Position.Y >= playerHeight / 2) player2.Position += Vector2.Up * playerSpeed * 2 * lDelta;
+            if (Input.IsKeyPressed(Key.Down) && player2.Position.Y <= screenSize.Y - playerHeight / 2) player2.Position += Vector2.Down * playerSpeed * 2 * lDelta;
         }
     }
 
@@ -76,14 +74,6 @@ public partial class Pong : Node2D
         if (ball.Position.X > screenSize.X) {scorePlayer1++; onGame = false;}
         if (ball.Position.X < 0) {scorePlayer2++; onGame = false;}
         if (!onGame) StartRound();
-    }
-
-    void CheckInput()
-    {
-        keyPressZ = Input.IsKeyPressed(Key.Z);
-        keyPressS = Input.IsKeyPressed(Key.S);
-        keyPressUp = Input.IsKeyPressed(Key.Up);
-        keyPressDown = Input.IsKeyPressed(Key.Down);
     }
 
     void SpeedUpBall()
