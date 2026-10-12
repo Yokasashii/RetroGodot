@@ -49,7 +49,7 @@ public partial class Snake : Node2D
         head.Position = new Vector2(lineMax / 2 * cell + 32, colomnMax / 2 * cell + 32);
         head.AreaEntered += CollisionSnake;
         apple = (Area2D)sceneApple.Instantiate();
-        apple.AreaEntered += EatApple;
+        apple.AreaEntered += CollisionApple;
         apple.Position = new Vector2(cell * rand.RandiRange(1, lineMax) + 32, cell * rand.RandiRange(1, colomnMax) + 32);
         AddChild(apple);
     }
@@ -111,27 +111,37 @@ public partial class Snake : Node2D
         }
     }
 
-    void EatApple(Area2D pArea)
+    void CollisionApple(Area2D pArea)
     {
-        apple.Position = new Vector2(cell * rand.RandiRange(1, lineMax - 1) + 32, cell * rand.RandiRange(1, colomnMax - 1) + 32);
-
-        body = (Area2D)sceneBody.Instantiate();
-        body.Position = snake[snake.Count - 1].Position;
-        snake.Add(body);
-        AddChild(body);
+        CallDeferred(nameof(EatApple));
     }
 
     void CollisionSnake(Area2D pArea)
     {
         if (pArea != apple)
         {
-            for (int i = 0; i < snake.Count; ++i)
-            {
-                snake[i].QueueFree();
-            }
-            snake.Clear();
-            apple.QueueFree();
-            StartGame();
+            CallDeferred(nameof(EndGame));
         }
+    }
+
+    void EndGame ()
+    {
+        for (int i = 0; i < snake.Count; ++i)
+        {
+            snake[i].QueueFree();
+        }
+        snake.Clear();
+        apple.QueueFree();
+        StartGame();
+    }
+
+    void EatApple() 
+    {
+        apple.Position = new Vector2(cell * rand.RandiRange(1, lineMax - 2) + 32, cell * rand.RandiRange(1, colomnMax - 2) + 32);
+
+        body = (Area2D)sceneBody.Instantiate();
+        body.Position = snake[snake.Count - 1].Position;
+        snake.Add(body);
+        AddChild(body);
     }
 }
